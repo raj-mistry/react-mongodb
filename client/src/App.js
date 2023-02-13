@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter, Route,Routes} from 'react-router-dom'
+import Register from './pages/Register';
+import Login from './pages/Login';
 
 class App extends Component {
 state = {
@@ -26,11 +27,12 @@ state = {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">{this.state.data}</p>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" exact element={<Login/>}/>
+            <Route path="/register" exact element={<Register/>}/>
+          </Routes>
+        </BrowserRouter>
       </div>
     );
   }

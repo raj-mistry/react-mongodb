@@ -17,7 +17,10 @@ const addressSchema = new mongoose.Schema({
 
 //pass in object with key value pair.
 const userSchema = new mongoose.Schema({
-    name: String,
+    name: {
+        type: String, 
+        required: true
+    },
     age: {
         type: Number,
         min: 1
@@ -25,7 +28,12 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        lowercase: true
+        lowercase: true,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
     },
     createdAt: {
         type: Date,
@@ -39,7 +47,7 @@ const userSchema = new mongoose.Schema({
     bestFriend: mongoose.SchemaTypes.ObjectId,
     hobbies: [String],
     address: addressSchema
-})
+}, {collection: 'users'})
 
 //name of model and the schema
 module.exports = mongoose.model("User", userSchema)
