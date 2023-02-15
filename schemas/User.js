@@ -28,8 +28,7 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        lowercase: true,
-        required: true
+        lowercase: true
     },
     password: {
         type: String,
@@ -43,6 +42,11 @@ const userSchema = new mongoose.Schema({
     updatedAt: {
         type: Date,
         default: ()=> Date.now()
+    },
+    quote: {
+        type: String,
+        required: false,
+        lowercase: false,
     },
     bestFriend: mongoose.SchemaTypes.ObjectId,
     hobbies: [String],

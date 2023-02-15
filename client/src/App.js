@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {BrowserRouter, Route,Routes} from 'react-router-dom'
 import Register from './pages/Register';
 import Login from './pages/Login';
+import Home from './pages/Home';
 
 class App extends Component {
 state = {
@@ -31,6 +32,7 @@ state = {
           <Routes>
             <Route path="/login" exact element={<Login/>}/>
             <Route path="/register" exact element={<Register/>}/>
+            <Route path="/home" exact element={<Home/>}/>
           </Routes>
         </BrowserRouter>
       </div>

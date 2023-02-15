@@ -23,6 +23,15 @@ function Login(){
 
         const data = await response.json()
         console.log(data);
+
+        if (data.user){
+            localStorage.setItem('token', data.user)
+            alert('Login successful')
+            window.location.href = '/home'
+        }
+        else{
+            alert('Please check user and password');
+        }
     }
 
     return(
