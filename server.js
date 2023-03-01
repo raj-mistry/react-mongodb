@@ -7,11 +7,13 @@ const jwt = require('jsonwebtoken')
 app.use(cors())
 app.use(express.json())
 const mongoose = require('mongoose');
-
+const bcrypt = require('bcrypt');
+const saltRounds= 10;
 
 
 //importing schemas
-const User = require('./schemas/User.js')
+const User = require('./schemas/User.js');
+const { rejectSeries } = require('async');
 
 
 //connecting to mongodb
@@ -44,12 +46,23 @@ app.post('/api/register', async (req,res)=>{
 
     console.log(req.body);
 
+    const user = await User.findOne({
+        email: req.body.email,
+    })
+
+    if (user){ //user already exists
+        return res.json({status: 'error', error: 'Duplicate email'})
+    }
+
     try{
-        const user = await User.create({
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password
+        bcrypt.hash(req.body.password, saltRounds, async function(err,hashedPassword){
+            const user = await User.create({
+                name: req.body.name,
+                email: req.body.email,
+                password: hashedPassword
+            })
         })
+        
         res.json({status: 'ok'})
     } catch(err){
         res.json({status: 'error', error: 'Duplicate email'})
@@ -59,17 +72,28 @@ app.post('/api/register', async (req,res)=>{
 app.post('/api/login', async (req,res)=>{
     console.log(req.body);
 
+    try{
     const user = await User.findOne({
         email: req.body.email,
-        password: req.body.password
     })
 
-    if (user){
-        const token = jwt.sign({name: user.name, email: user.email}, 'secret123')
-        return res.json({status: 'ok', user: token})
+    if (!user){
+        return res.json({status: 'error', error: 'Email does not exist'})
     }
-    else{
-        return res.json({status: 'error', user: false})
+
+    const isPasswordValid = await bcrypt.compare(req.body.password, user.password).then(async function(result) {
+        return result
+    });
+
+    if (!isPasswordValid){
+        return res.json({status: 'error', error: 'Password does not match'})
+    }
+    
+    const token = jwt.sign({name: user.name, email: user.email}, 'secret123')
+    return res.json({status: 'ok', user: token})
+    }
+    catch(err){
+        return res.json({status: 'error', error: 'Try again'})
     }
 }) 
 

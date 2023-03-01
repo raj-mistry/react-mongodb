@@ -30,7 +30,9 @@ function Login(){
             window.location.href = '/home'
         }
         else{
-            alert('Please check user and password');
+            if (data.error){
+                alert(data.error);
+            }
         }
     }
 

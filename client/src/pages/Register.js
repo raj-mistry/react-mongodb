@@ -14,7 +14,7 @@ function Register(){
 
     async function registerUser(event){
         event.preventDefault()//prevent refresh
-        const response = fetch('http://localhost:5000/api/register',
+        const response = await fetch('http://localhost:5000/api/register',
         {
             method: 'POST',
             headers: {
@@ -29,7 +29,10 @@ function Register(){
         console.log(data);
 
         if (data.status == 'ok'){
-            navigate.push('/login')
+            navigate('/login')
+        }
+        else if (data.error){
+            alert(data.error)
         }
     }
 
