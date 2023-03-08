@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const User = require('../schemas/User.js');
 //schema within schema (address within user)
 
 const addressSchema = new mongoose.Schema({
