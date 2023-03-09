@@ -20,6 +20,10 @@ app.use("/api", authenticationRoute);
 const quoteRoute = require('./routes/Quotes');
 app.use("/api", quoteRoute);
 
+//blog routes
+const blogRoute = require('./routes/BlogRouter');
+app.use("/api", blogRoute);
+
 //opening port for server to list.
 app.listen(port, () => console.log(`Listening on port ${port}`)); 
 

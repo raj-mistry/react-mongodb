@@ -1,0 +1,37 @@
+const express = require("express");
+const router = express.Router();
+const Blog = require('../schemas/Blog.js');
+const jwt = require('jsonwebtoken')
+var ObjectId = require('mongodb').ObjectId;
+
+
+//quote routes
+router.get('/blog', async (req,res)=>{
+    const token = req.headers['x-access-token']
+
+    try {
+        const decoded = jwt.verify(token,'secret123')
+        const id = new ObjectId(decoded.id)
+        const blogs = await Blog.find({user: id})
+        return res.json({status: 'ok', blogs: blogs})
+
+    } catch(error){
+        res.json({status: 'error', error: 'invalid token'})
+    }
+})
+
+router.post('/blog', async (req,res)=>{
+    const token = req.headers['x-access-token']
+
+    try {
+        const decoded = jwt.verify(token,'secret123')
+        const id = decoded.id
+        await Blog.create({title: req.body.title, text: req.body.text, user: id })
+        return res.json({status: 'ok'})
+
+    } catch(error){
+        res.json({status: 'error', error: 'invalid token'})
+    }
+})
+
+module.exports = router;
