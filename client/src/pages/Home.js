@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {useNavigate} from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
+import Blog from './Blog'
 
 const Home = () =>{
 
@@ -60,7 +61,6 @@ const Home = () =>{
                 localStorage.removeItem('token')
                 navigate.replace('/login')
             } else{
-                alert('success')
                 populateQuote()
             }
         }
@@ -78,6 +78,8 @@ const Home = () =>{
                 <input type="text" value={newQuote} onChange={(e)=>{setNewQuote(e.target.value)}}></input>
                 <input type="submit" text="submit"></input>
             </form>
+
+            <Blog></Blog>
         </div>
     )
 }

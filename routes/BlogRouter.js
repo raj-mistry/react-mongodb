@@ -12,7 +12,7 @@ router.get('/blog', async (req,res)=>{
     try {
         const decoded = jwt.verify(token,'secret123')
         const id = new ObjectId(decoded.id)
-        const blogs = await Blog.find({user: id})
+        const blogs = await Blog.find({user: id}).sort({createdAt:-1});
         return res.json({status: 'ok', blogs: blogs})
 
     } catch(error){

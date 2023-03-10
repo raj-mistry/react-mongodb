@@ -7,7 +7,7 @@ const Blog = () =>{
     const navigate = useNavigate();
     const [newTitle, setNewTitle] = useState('')
     const [newText, setNewText] = useState('')
-    const [blogs, setBlogs] = useState([{title: "Hi", text: "Hello"}])
+    const [blogs, setBlogs] = useState([])
 
 
     async function submitBlog(e){
@@ -28,7 +28,6 @@ const Blog = () =>{
             setNewTitle('');
             setNewText('');
             await populateBlog();
-            alert('quote successfully submitted')
         }
         else{
             alert(data.error)
@@ -82,7 +81,6 @@ const Blog = () =>{
                 localStorage.removeItem('token')
                 navigate.replace('/login')
             } else{
-                alert('success')
                 populateBlog()
             }
         }
