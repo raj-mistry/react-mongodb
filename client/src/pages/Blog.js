@@ -23,7 +23,6 @@ const Blog = () =>{
         })
 
         let data = await req.json()
-        console.log(data)
 
         if (data.status === 'ok'){
             setNewTitle('');
@@ -46,34 +45,24 @@ const Blog = () =>{
 
         const data = await req.json()
 
-        // let arr = data.blogs.map(blog=>{
-        //     return {user: blog._id, title: blog.title, text: blog.text}
-        // })
         if (data.status === 'ok'){
-            // console.log(arr)
             setBlogs(data.blogs)
-            console.log(blogs)
         }
     }
 
 
-    async function deleteBlog(blog){
-        console.log("1")
-        console.log(blog);
+    async function deleteBlog(_id){
         const req = await fetch('http://localhost:5000/api/blog', 
         {
             method: 'DELETE',
             headers: {
+                'Content-Type': 'application/json',
                 'x-access-token': localStorage.getItem('token')
             },
-            body: JSON.stringify({id: blog._id})
+            body: JSON.stringify({id: _id})
         })
 
-        console.log("2")
-
         const data = await req.json()
-
-        console.log(data)
 
         if (data.status === 'ok'){
             populateBlog();
@@ -85,7 +74,6 @@ const Blog = () =>{
 
 
     useEffect(()=>{
-        console.log('useffect called')
         const token = localStorage.getItem('token')
         if (token){
             const user = jwtDecode(token)
@@ -107,7 +95,7 @@ const Blog = () =>{
               <div key={blog._id}>
                 <h1>{blog.title}</h1>
                 <p>{blog.text}</p>
-                <button value={blog} onClick={(e)=> deleteBlog(e.target.value)}>Delete</button>
+                <button value={blog._id} onClick={(e)=> deleteBlog(e.target.value)}>Delete</button>
               </div> 
             )
         }

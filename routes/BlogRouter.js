@@ -36,15 +36,10 @@ router.post('/blog', async (req,res)=>{
 
 router.delete('/blog', async (req,res)=>{
     const token = req.headers['x-access-token']
-    console.log("hi")
-    console.log(req.body.id);
-    console.log(req.body)
-    console.log(req);
 
     try {
         const decoded = jwt.verify(token,'secret123')
         const response = await Blog.deleteOne({_id: new ObjectId(req.body.id)})
-        console.log(response)
         return res.json({status: 'ok'})
 
     } catch(error){
