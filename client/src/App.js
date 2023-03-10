@@ -3,6 +3,7 @@ import {BrowserRouter, Route,Routes} from 'react-router-dom'
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import Blog from './pages/Blog';
 
 class App extends Component {
 state = {
@@ -33,6 +34,7 @@ state = {
             <Route path="/login" exact element={<Login/>}/>
             <Route path="/register" exact element={<Register/>}/>
             <Route path="/home" exact element={<Home/>}/>
+            <Route path="/blog" exact element={<Blog/>}/>
           </Routes>
         </BrowserRouter>
       </div>
