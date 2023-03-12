@@ -13,6 +13,19 @@ const Blog = () =>{
     const [newText, setNewText] = useState('')
     const [blogs, setBlogs] = useState([])
 
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+    
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+    
+        return [year, month, day].join('-');
+    }
 
     async function submitBlog(e){
         e.preventDefault()
@@ -48,9 +61,35 @@ const Blog = () =>{
 
         const data = await req.json()
 
+    
+
         if (data.status === 'ok'){
+            data.blogs = await populateAuthors(data.blogs)
             setBlogs(data.blogs)
         }
+    }
+    async function populateAuthors(blogs){
+        let authorBlogs = await Promise.all(blogs.map(async (blog)=>{
+            try{
+                const req = await fetch('http://localhost:5000/api/user?id='+String(blog.user), 
+                {
+                    headers: {
+                        'x-access-token': localStorage.getItem('token')
+                    }
+                })
+                const data = await req.json();
+                if (data.status =='ok'){
+                    blog.author = data.user.name? data.user.name : ""
+                }
+                else{
+                    blog.author = ""
+                }
+            }
+            catch(error){
+            }
+            return blog
+        }))
+        return authorBlogs
     }
 
 
@@ -95,13 +134,16 @@ const Blog = () =>{
     const blogList=blogs.map(
         (blog)=>{
             return( 
-                <Card className="blogContainer" style={{ width: '18rem' }}>
-                <Card.Body>
+                <Card key={blog._id}className="blogContainer">
+                <Card.Body className="blogWrap">
                     
                     <button className="closeButton" value={blog._id} onClick={(e) => {deleteBlog(e.currentTarget.value); }}><AiFillCloseCircle className="closeIcon"/></button>
                     <Card.Title className="blogtitle">{blog.title}</Card.Title>
+                    <Card.Subtitle className="blogDate blogBody"><b>Author:</b> {blog.author}</Card.Subtitle>
+                    <Card.Subtitle className="blogDate blogBody">{formatDate(blog.updatedAt) || formatDate(blog.createdAt)}</Card.Subtitle>
+                    
                     <Card.Text >
-                        <p className="blogdescription">{blog.text}</p>
+                        <p className="blogdescription blogBody">{blog.text}</p>
                     
                     </Card.Text>
                 </Card.Body>
@@ -121,7 +163,6 @@ const Blog = () =>{
                 <input type="text" value={newText} onChange={(e)=>{setNewText(e.target.value)}}></input>
                 <input type="submit" text="submit"></input>
             </form>
-            <p>{blogs.toString}</p>
             <div style={{background: "black"}}>
             <div className="blogposts">
             {blogList}

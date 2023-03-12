@@ -16,6 +16,10 @@ connectDB();
 const authenticationRoute = require('./routes/Authentication');
 app.use("/api", authenticationRoute);
 
+//user routes
+const userRoute = require('./routes/User');
+app.use("/api", userRoute);
+
 //quotes routes
 const quoteRoute = require('./routes/Quotes');
 app.use("/api", quoteRoute);
