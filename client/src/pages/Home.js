@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {useNavigate} from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
 import Blog from './Blog'
+import Timer from './Timer'
 
 const Home = () =>{
 
@@ -80,6 +81,8 @@ const Home = () =>{
             </form>
 
             <Blog></Blog>
+
+            <Timer/>
         </div>
     )
 }

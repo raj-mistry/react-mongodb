@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import {useNavigate} from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
+import './Blog.css';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import {AiFillCloseCircle} from 'react-icons/ai';
 
 const Blog = () =>{
 
@@ -51,6 +55,7 @@ const Blog = () =>{
 
 
     async function deleteBlog(_id){
+        console.log(_id)
         const req = await fetch('http://localhost:5000/api/blog', 
         {
             method: 'DELETE',
@@ -87,14 +92,21 @@ const Blog = () =>{
     }, [])
 
 
-    const tableRows=blogs.map(
+    const blogList=blogs.map(
         (blog)=>{
             return( 
-              <div key={blog._id}>
-                <h1>{blog.title}</h1>
-                <p>{blog.text}</p>
-                <button value={blog._id} onClick={(e)=> deleteBlog(e.target.value)}>Delete</button>
-              </div> 
+                <Card className="blogContainer" style={{ width: '18rem' }}>
+                <Card.Body>
+                    
+                    <button className="closeButton" value={blog._id} onClick={(e) => {deleteBlog(e.currentTarget.value); }}><AiFillCloseCircle className="closeIcon"/></button>
+                    <Card.Title className="blogtitle">{blog.title}</Card.Title>
+                    <Card.Text >
+                        <p className="blogdescription">{blog.text}</p>
+                    
+                    </Card.Text>
+                </Card.Body>
+                </Card>
+
             )
         }
     )
@@ -110,9 +122,11 @@ const Blog = () =>{
                 <input type="submit" text="submit"></input>
             </form>
             <p>{blogs.toString}</p>
-
-
-                {tableRows}
+            <div style={{background: "black"}}>
+            <div className="blogposts">
+            {blogList}
+            </div>
+            </div>
 
         </div>
     )
