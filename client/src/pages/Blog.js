@@ -168,9 +168,7 @@ const Blog = () =>{
 
     return (
         <div>
-            <h1>{posted ? "posted today": "you havent posted today"}</h1>
-            <h2>Create a new Blogpost</h2>
-            <CreatePost sendData={submitBlog}/>
+            <CreatePost sendData={submitBlog} posted={posted}/>
             <div style={{background: "black"}}>
             <div className="blogposts">
             {blogList}

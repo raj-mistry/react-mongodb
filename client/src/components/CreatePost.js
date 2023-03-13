@@ -25,6 +25,7 @@ const CreatePost = (props) =>{
 
     return (
             <div className="form-group createPost">
+                {!props.posted ? <p className="reminder">It looks like you haven't journaled today!</p>: ""}
                 <InputGroup className="mb-3">
                     <Form.Control
                     placeholder="Title"

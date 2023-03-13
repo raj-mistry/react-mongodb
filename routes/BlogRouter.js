@@ -34,6 +34,29 @@ router.post('/blog', async (req,res)=>{
     }
 })
 
+router.put('/blog', async (req,res)=>{
+    const token = req.headers['x-access-token']
+
+    try {
+        const decoded = jwt.verify(token,'secret123')
+        const id = decoded.id
+        const filter = {_id: new ObjectId(req.body._id)}
+        const options = {upsert: false}
+        const updateBlog = {
+            $set: {
+                title: req.body.title,
+                text: req.body.text,
+                updatedAt: Date.now()
+            }
+        }
+        await Blog.updateOne(filter, updateBlog, options);
+        return res.json({status: 'ok'})
+
+    } catch(error){
+        res.json({status: 'error', error: 'invalid token'})
+    }
+})
+
 router.delete('/blog', async (req,res)=>{
     const token = req.headers['x-access-token']
 

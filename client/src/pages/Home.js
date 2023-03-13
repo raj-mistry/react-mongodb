@@ -72,13 +72,13 @@ const Home = () =>{
 
     return (
         <div>
-            <h1>Your quote: {quote || 'No quote found'}</h1>
+            {/* <h1>Your quote: {quote || 'No quote found'}</h1>
 
             <h2>Set Quote</h2>
             <form onSubmit={submitQuote}>
                 <input type="text" value={newQuote} onChange={(e)=>{setNewQuote(e.target.value)}}></input>
                 <input type="submit" text="submit"></input>
-            </form>
+            </form> */}
 
             <Blog></Blog>
 
