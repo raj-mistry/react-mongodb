@@ -34,9 +34,9 @@
 }
 
 
-@media screen and (min-width: 700) {
+@media screen and (min-width: 700px) {
     .blogContainer {
-        width: 500px;
+        width: 600px;
     }
 
   }
@@ -82,7 +82,7 @@
 
 .blogtitle{
     font-weight: 700;
-    font-size: 40px;
+    font-size: 30px;
 }
 
 .blogdescription{

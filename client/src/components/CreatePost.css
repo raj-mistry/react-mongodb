@@ -1,0 +1,116 @@
+
+.inputArea{
+    margin-right: 20px;
+    
+}
+
+.postButton{
+    color: white;
+    width: 40px;
+    height: 40px;
+    
+}
+
+.postButton{
+    color: white;
+    width: 40px;
+    height: 40px;
+    transition: color 0.1s ease-out 10ms;
+    
+}
+
+.postButton:hover{
+
+    color: #8cd3ff;
+    cursor: pointer;
+    
+}
+
+.postButtonContainer{
+    text-align: right;
+    margin: auto;
+    padding: 20px 20px 20px 20px;
+}
+
+.createPost{
+    background-color: #333;
+    padding: 30px 0px 30px 0px;
+    text-align: center;
+    
+}
+
+.formStyle{
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.form-control{
+    background-color: #222 !important;
+    border: none !important;
+    border-radius: 5px !important;
+    color: white !important;
+    -webkit-border-radius: 12px ;
+    -moz-border-radius: 12px ;
+    -ms-border-radius: 12px ;
+    -o-border-radius: 12px ;
+    font-size: 20px;
+    margin: auto;
+    padding: 20px 20px 20px 20px;
+    
+}
+
+
+.rti--container {
+    --rti-bg: #141414 !important;
+    --rti-border: none !important;
+    --rti-main: #141414 !important;
+    --rti-radius: 12px !important;
+    --rti-s: 6px !important; 
+    --rti-tag: #2C3039 !important;
+    --rti-tag-remove: #0088FF !important;
+    
+    
+  }
+.rti--input{
+    background-color: #141414 !important;
+    color: white !important;
+}
+
+@media screen and (width < 700px) {
+    .form-control {
+        min-width: 370px
+    }
+    .postButtonContainer {
+        width: 370px;
+    }
+
+  }
+
+@media screen and (min-width: 700px) {
+    .form-control {
+        width: 600px;
+    }
+    .postButtonContainer {
+        width: 600px;
+    }
+
+  }
+
+  @media screen and (min-width: 1000px) {
+    .form-control {
+        width: 800px;
+    }
+    .postButtonContainer {
+        width: 800px;
+    }
+
+  }
+
+@media screen and (min-width: 1400px) {
+    .form-control {
+        width: 1200px;
+    }
+    .postButtonContainer {
+        width: 1200px;
+    }
+  }

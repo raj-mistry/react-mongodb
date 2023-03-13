@@ -5,7 +5,9 @@ import './Blog.css';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import {AiFillCloseCircle} from 'react-icons/ai';
-import { current } from 'immer';
+import CreatePost from '../components/CreatePost';
+import sanitizeHtml from 'sanitize-html';
+
 
 const Blog = () =>{
 
@@ -14,6 +16,28 @@ const Blog = () =>{
     const [newText, setNewText] = useState('')
     const [blogs, setBlogs] = useState([])
     const [posted, setPosted] = useState(false)
+
+    function formatText(text) {
+
+        // Split the text into lines
+        const lines = text.split("\n");
+      
+        // Convert bullet points to <li> tags
+        const listItems = lines.map((line) => {
+          if (line.startsWith("- ")) {
+            return `<li>${line.slice(2)}</li>`;
+          } else {
+            return `<br/>${line}`;
+          }
+        });
+      
+        // Join the lines back together with <br> tags
+        let result = listItems.join("");
+        result= sanitizeHtml(result, {
+            allowedTags: ['br', 'li', 'em', 'strong', 'a','b']
+          });
+        return result;
+      }
 
 
     
@@ -31,8 +55,7 @@ const Blog = () =>{
         return [year, month, day].join('-');
     }
 
-    async function submitBlog(e){
-        e.preventDefault()
+    const submitBlog = async (e) =>{
 
         let req = await fetch ('http://localhost:5000/api/blog',{
             method: 'POST',
@@ -40,7 +63,7 @@ const Blog = () =>{
                 'Content-Type': 'application/json',
                 'x-access-token': localStorage.getItem('token')
             },
-            body: JSON.stringify({title: newTitle, text: newText})
+            body: JSON.stringify({title: e.title, text: e.text})
         })
 
         let data = await req.json()
@@ -174,7 +197,8 @@ const Blog = () =>{
                     <Card.Subtitle className="blogDate blogBody">{blog.updatedAt ? formatDate(blog.updatedAt): blog.createdAt ? formatDate(blog.createdAt) : ""}</Card.Subtitle>
                     
                     <Card.Text >
-                        <p className="blogdescription blogBody">{blog.text}</p>
+                        <div className="blogdescription blogBody">
+                        <div dangerouslySetInnerHTML={{ __html: formatText(blog.text) }} /></div>
                     
                     </Card.Text>
                 </Card.Body>
@@ -189,16 +213,19 @@ const Blog = () =>{
         <div>
             <h1>{posted ? "posted today": "you havent posted today"}</h1>
             <h2>Create a new Blogpost</h2>
-            <form onSubmit={submitBlog}>
+            <CreatePost sendData={submitBlog}/>
+            {/* <form onSubmit={submitBlog}>
                 <input type="text" value={newTitle} onChange={(e)=>{setNewTitle(e.target.value)}}></input>
                 <input type="text" value={newText} onChange={(e)=>{setNewText(e.target.value)}}></input>
                 <input type="submit" text="submit"></input>
             </form>
+    */}
             <div style={{background: "black"}}>
             <div className="blogposts">
             {blogList}
             </div>
             </div>
+
 
         </div>
     )
