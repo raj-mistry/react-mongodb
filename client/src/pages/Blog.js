@@ -5,6 +5,7 @@ import './Blog.css';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import {AiFillCloseCircle} from 'react-icons/ai';
+import { current } from 'immer';
 
 const Blog = () =>{
 
@@ -12,7 +13,10 @@ const Blog = () =>{
     const [newTitle, setNewTitle] = useState('')
     const [newText, setNewText] = useState('')
     const [blogs, setBlogs] = useState([])
+    const [posted, setPosted] = useState(false)
 
+
+    
     function formatDate(date) {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
@@ -44,6 +48,11 @@ const Blog = () =>{
         if (data.status === 'ok'){
             setNewTitle('');
             setNewText('');
+
+            // let currentDate = Date.now()
+            // console.log(currentDate)
+            // var newBlogList = [{title: newTitle, text: newText, author: "", createdAt: currentDate}].concat(blogs)
+            // setBlogs(newBlogList);
             await populateBlog();
         }
         else{
@@ -64,13 +73,29 @@ const Blog = () =>{
     
 
         if (data.status === 'ok'){
+
+            
             data.blogs = await populateAuthors(data.blogs)
             setBlogs(data.blogs)
         }
     }
     async function populateAuthors(blogs){
+
+        const currentDate = new Date(Date.now());
+        let hashBlogAuthors = {}
         let authorBlogs = await Promise.all(blogs.map(async (blog)=>{
+            if (currentDate.toDateString() == new Date(blog.createdAt).toDateString()) {
+                setPosted(true)
+            }
+
+            console.log(hashBlogAuthors[blog.user])
+            if (hashBlogAuthors[blog.user]){
+                console.log("1")
+                blog.author = hashBlogAuthors[blog.user]
+                return blog
+            }
             try{
+                console.log("2")
                 const req = await fetch('http://localhost:5000/api/user?id='+String(blog.user), 
                 {
                     headers: {
@@ -79,6 +104,8 @@ const Blog = () =>{
                 })
                 const data = await req.json();
                 if (data.status =='ok'){
+                    hashBlogAuthors[blog.user] = data.user.name
+                    console.log(hashBlogAuthors[blog.user])
                     blog.author = data.user.name? data.user.name : ""
                 }
                 else{
@@ -89,12 +116,16 @@ const Blog = () =>{
             }
             return blog
         }))
+        console.log("final")
+        console.log(hashBlogAuthors)
         return authorBlogs
     }
 
 
     async function deleteBlog(_id){
         console.log(_id)
+
+        setBlogs(blogs.filter(blog => blog._id !== _id))
         const req = await fetch('http://localhost:5000/api/blog', 
         {
             method: 'DELETE',
@@ -108,9 +139,9 @@ const Blog = () =>{
         const data = await req.json()
 
         if (data.status === 'ok'){
-            populateBlog();
         }
         else{
+            populateBlog();
             alert("error")
         }
     }
@@ -140,7 +171,7 @@ const Blog = () =>{
                     <button className="closeButton" value={blog._id} onClick={(e) => {deleteBlog(e.currentTarget.value); }}><AiFillCloseCircle className="closeIcon"/></button>
                     <Card.Title className="blogtitle">{blog.title}</Card.Title>
                     <Card.Subtitle className="blogDate blogBody"><b>Author:</b> {blog.author}</Card.Subtitle>
-                    <Card.Subtitle className="blogDate blogBody">{formatDate(blog.updatedAt) || formatDate(blog.createdAt)}</Card.Subtitle>
+                    <Card.Subtitle className="blogDate blogBody">{blog.updatedAt ? formatDate(blog.updatedAt): blog.createdAt ? formatDate(blog.createdAt) : ""}</Card.Subtitle>
                     
                     <Card.Text >
                         <p className="blogdescription blogBody">{blog.text}</p>
@@ -156,7 +187,7 @@ const Blog = () =>{
 
     return (
         <div>
-
+            <h1>{posted ? "posted today": "you havent posted today"}</h1>
             <h2>Create a new Blogpost</h2>
             <form onSubmit={submitBlog}>
                 <input type="text" value={newTitle} onChange={(e)=>{setNewTitle(e.target.value)}}></input>
