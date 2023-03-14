@@ -3,15 +3,23 @@ import {useNavigate} from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
 import './Blog.css';
 import Card from 'react-bootstrap/Card';
-import {AiFillCloseCircle} from 'react-icons/ai';
+import {AiFillCloseCircle, AiFillEdit} from 'react-icons/ai';
 import CreatePost from '../components/CreatePost';
 import sanitizeHtml from 'sanitize-html';
+import Dropdown from 'react-bootstrap/Dropdown';
+import Button from 'react-bootstrap/Button';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import SplitButton from 'react-bootstrap/SplitButton';
+import {FiMoreHorizontal} from 'react-icons/fi'
+import EditPost from '../components/EditPost';
 
 const Blog = () =>{
 
     const navigate = useNavigate();
     const [blogs, setBlogs] = useState([])
     const [posted, setPosted] = useState(false)
+    const [showEditBlog, setShowEditBlog] = useState(false)
+    const [editBlogId, setEditBlogId] = useState("")
 
     //convert blogpost text to html elements
     function formatText(text) {
@@ -31,6 +39,11 @@ const Blog = () =>{
             allowedTags: ['br', 'li', 'em', 'strong', 'a','b']
           });
         return result;
+      }
+
+      function editBlog(blogId){
+        setEditBlogId(blogId);
+        setShowEditBlog(true);
       }
 
     //date of the blogpost
@@ -149,10 +162,20 @@ const Blog = () =>{
     const blogList=blogs.map(
         (blog)=>{
             return( 
+                
                 <Card key={blog._id}className="blogContainer">
+                <Dropdown className="moreDropdown">
+                <Dropdown.Toggle id="dropdown-basic"><FiMoreHorizontal className="moreButton"/>
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu variant="dark">
+                    <Dropdown.Item ><button className="closeButton" value={blog._id} onClick={(e) => {deleteBlog(e.currentTarget.value); }}><AiFillCloseCircle className="closeIcon"/> Delete</button></Dropdown.Item>
+                    <Dropdown.Item ><button className="closeButton" value={blog._id} onClick={(e) => {editBlog(e.currentTarget.value); }}><AiFillEdit className="editIcon"/> Edit</button></Dropdown.Item>
+                </Dropdown.Menu>
+                </Dropdown>
                 <Card.Body className="blogWrap">
-                    <button className="closeButton" value={blog._id} onClick={(e) => {deleteBlog(e.currentTarget.value); }}><AiFillCloseCircle className="closeIcon"/></button>
-                    <Card.Title className="blogtitle">{blog.title}</Card.Title>
+                    {/* <button className="closeButton" value={blog._id} onClick={(e) => {deleteBlog(e.currentTarget.value); }}><AiFillCloseCircle className="closeIcon"/></button> */}
+                    <Card.Title className="blogtitle blogBody">{blog.title}</Card.Title>
                     <Card.Subtitle className="blogDate blogBody"><b>Author:</b> {blog.author}</Card.Subtitle>
                     <Card.Subtitle className="blogDate blogBody">{blog.updatedAt ? formatDate(blog.updatedAt): blog.createdAt ? formatDate(blog.createdAt) : ""}</Card.Subtitle>
                     <Card.Text >
@@ -168,6 +191,7 @@ const Blog = () =>{
 
     return (
         <div>
+            {showEditBlog? <EditPost blogId={editBlogId}/>: null}
             <CreatePost sendData={submitBlog} posted={posted}/>
             <div style={{background: "black"}}>
             <div className="blogposts">

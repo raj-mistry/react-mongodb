@@ -9,6 +9,19 @@
     
 }
 
+.moreButton{
+    height: 30px;
+    width: 30px;
+
+
+}
+
+.modal-content {
+    background-color: #333;
+  }
+.moreDropdown{
+    margin-left: auto;
+}
 
 .blogWrap{
     word-wrap: break-word;
@@ -54,13 +67,29 @@
     }
   }
 
+  .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: #222 !important;
+    color: none !important;
+    border-color: #222;
+}
 
+
+  .dropdown-toggle::after {
+    display: none !important; 
+    background-color: none;
+    color: none;
+  }
 
 .closeButton{
 
     background: none;
     border: none;
     float: right;
+    background-color: none;
+    color: white;
+    background-color: none !important;
+    margin-bottom: 20px;
+    font-size: 20px;
 }
 .closeIcon{
     border-radius: 50%;
@@ -80,9 +109,31 @@
     
 }
 
+.editIcon{
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    color: white;
+    transition: color 0.1s ease-out 10ms;
+
+}
+
+.editIcon:hover{
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    color: #009dff;
+    cursor: pointer;
+    
+}
+
+
+
+
 .blogtitle{
     font-weight: 700;
     font-size: 30px;
+    padding-bottom: 30px;
 }
 
 .blogdescription{

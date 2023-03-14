@@ -20,6 +20,23 @@ router.get('/blog', async (req,res)=>{
     }
 })
 
+router.get('/blog/:id', async (req,res)=>{
+
+    try{
+    const blog = await Blog.findOne({
+        _id: new ObjectId(req.params.id)
+    })
+
+    if (!blog){
+        return res.json({status: 'error', error: 'Blog does not exist'})
+    }
+    return res.json({status: 'ok', blog: blog})
+    
+    }catch(err){
+        return res.json({status: 'error', error: 'Try again'})
+    }
+}) 
+
 router.post('/blog', async (req,res)=>{
     const token = req.headers['x-access-token']
 
