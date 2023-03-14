@@ -88,7 +88,7 @@ const EditPost = (props) =>{
 
             <Modal.Body >
             <div className="form-group">
-                <button className="closeButton" onClick={(e) => {handleClose(); }}><AiFillCloseCircle className="closeIcon"/></button>
+                <button className="editCloseButton" onClick={(e) => {handleClose(); }}><AiFillCloseCircle className="closeIcon"/></button>
                 <InputGroup className="mb-3 form-control">
                     <Form.Control
                     placeholder="Title"

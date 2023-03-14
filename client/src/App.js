@@ -4,6 +4,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Blog from './pages/Blog';
+import './App.css'
 
 
 class App extends Component {

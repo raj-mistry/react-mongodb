@@ -8,6 +8,17 @@
     
 }
 
+.editCloseButton{
+
+    background: none;
+    border: none;
+    float: right;
+    background-color: none;
+    color: white;
+    background-color: none !important;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
 
 .blogTitle{
     font-size: 30px !important;
