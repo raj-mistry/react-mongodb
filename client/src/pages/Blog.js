@@ -21,6 +21,15 @@ const Blog = () =>{
     const [showEditBlog, setShowEditBlog] = useState(false)
     const [editBlogId, setEditBlogId] = useState("")
 
+
+    function handleUpdate(){
+        populateBlog();
+    }
+    function closeModal(){
+        setShowEditBlog(false);
+        setEditBlogId("");
+    }
+
     //convert blogpost text to html elements
     function formatText(text) {
         // Split the text into lines
@@ -191,7 +200,7 @@ const Blog = () =>{
 
     return (
         <div>
-            {showEditBlog? <EditPost blogId={editBlogId}/>: null}
+            {showEditBlog? <EditPost handleUpdate={handleUpdate} closeModal={closeModal}blogId={editBlogId}/>: null}
             <CreatePost sendData={submitBlog} posted={posted}/>
             <div style={{background: "black"}}>
             <div className="blogposts">

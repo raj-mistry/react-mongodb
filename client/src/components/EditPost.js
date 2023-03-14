@@ -19,15 +19,39 @@ const EditPost = (props) =>{
       }
 
     function handleClose(){
-        console.log("close");
+        setPostText("");
+        setPostTitle("");
+        props.closeModal();
     }
     
-    async function createBlog(){
-        let res = await props.sendData({title: postTitle, text: postText})
-        if (res.status == 'ok'){
-            setPostTitle('');
-            setPostText('');
+    function handleUpdate(){
+        props.handleUpdate();
+    }
+    
+    async function updateBlog(){
+        try{
+        let req = await fetch ('http://localhost:5000/api/blog',{
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-access-token': localStorage.getItem('token')
+            },
+            body: JSON.stringify({_id: props.blogId, title: postTitle, text: postText})
+        })
+        let data = await req.json();
+        if (data.status == 'ok'){
+            handleUpdate();
+            handleClose();
+    
         }
+        else{
+            alert("update failed")
+        }
+        }
+        catch(e){
+            alert(e);
+        }
+
     }
 
     useEffect(()=>{
@@ -64,7 +88,7 @@ const EditPost = (props) =>{
 
             <Modal.Body >
             <div className="form-group">
-                <button className="closeButton" onClick={(e) => {handleClose(e.currentTarget.value); }}><AiFillCloseCircle className="closeIcon"/></button>
+                <button className="closeButton" onClick={(e) => {handleClose(); }}><AiFillCloseCircle className="closeIcon"/></button>
                 <InputGroup className="mb-3 form-control">
                     <Form.Control
                     placeholder="Title"
@@ -78,7 +102,7 @@ const EditPost = (props) =>{
                 <textarea style={{resize: "vertical" }}className="form-control" rows="6" placeholder="Text" id="postTextArea" value={postText} onChange={(e) => {setPostText(e.target.value); autoResize();}}></textarea>
                 <br/>
                 <div className="postButtonContainer">
-                <button className="sendButton" onClick={(e) => {createBlog();}}><MdSend className="postButton"/></button>
+                <button className="sendButton" onClick={(e) => {updateBlog();}}><MdSend className="postButton"/></button>
                 </div>
             </div>
             </Modal.Body>
