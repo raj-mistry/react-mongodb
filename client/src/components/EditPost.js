@@ -30,7 +30,7 @@ const EditPost = (props) =>{
     
     async function updateBlog(){
         try{
-        let req = await fetch ('http://localhost:5000/api/blog',{
+        let req = await fetch ('/api/blog',{
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ const EditPost = (props) =>{
 
     async function populateFields(){
         try{
-            const req = await fetch('http://localhost:5000/api/blog/'+String(props.blogId), 
+            const req = await fetch('/api/blog/'+String(props.blogId), 
             {
                 headers: {
                     'x-access-token': localStorage.getItem('token')

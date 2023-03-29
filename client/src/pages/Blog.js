@@ -70,7 +70,7 @@ const Blog = () =>{
 
     //submit a new blog
     const submitBlog = async (e) =>{
-        let req = await fetch ('http://localhost:5000/api/blog',{
+        let req = await fetch ('/api/blog',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ const Blog = () =>{
     }
 
     async function populateBlog(){
-        const req = await fetch('http://localhost:5000/api/blog', 
+        const req = await fetch('/api/blog', 
         {
             headers: {
                 'x-access-token': localStorage.getItem('token')
@@ -114,7 +114,7 @@ const Blog = () =>{
                 return blog
             }
             try{
-                const req = await fetch('http://localhost:5000/api/user?id='+String(blog.user), 
+                const req = await fetch('/api/user?id='+String(blog.user), 
                 {
                     headers: {
                         'x-access-token': localStorage.getItem('token')
@@ -138,7 +138,7 @@ const Blog = () =>{
 
     async function deleteBlog(_id){
         setBlogs(blogs.filter(blog => blog._id !== _id))
-        const req = await fetch('http://localhost:5000/api/blog', 
+        const req = await fetch('/api/blog', 
         {
             method: 'DELETE',
             headers: {

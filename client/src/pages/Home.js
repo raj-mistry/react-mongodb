@@ -14,7 +14,7 @@ const Home = () =>{
     async function submitQuote(e){
         e.preventDefault()
 
-        let req = await fetch ('http://localhost:5000/api/quote',{
+        let req = await fetch ('/api/quote',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ const Home = () =>{
     }
 
     async function populateQuote(){
-        const req = await fetch('http://localhost:5000/api/quote', 
+        const req = await fetch('/api/quote', 
         {
             headers: {
                 'x-access-token': localStorage.getItem('token')
