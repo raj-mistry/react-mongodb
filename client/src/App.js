@@ -37,6 +37,7 @@ state = {
             <Route path="/register" exact element={<Register/>}/>
             <Route path="/home" exact element={<Home/>}/>
             <Route path="/blog" exact element={<Blog/>}/>
+            <Route path="/" exact element={<Home/>}/>
           </Routes>
         </BrowserRouter>
       </div>
